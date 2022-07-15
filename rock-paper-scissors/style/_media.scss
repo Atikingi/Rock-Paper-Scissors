@@ -1,0 +1,40 @@
+@media all and (max-width:376px){
+    .game{
+
+        &__title{
+            margin-bottom: 0;
+        }
+
+        &__lobby{
+            min-width: 305px;
+            min-height: 220px;
+    
+            &-title{
+                margin-bottom: 10px;
+
+                font-size: 18px;
+            };
+        };
+
+        &__loader{
+            left: 38%;
+        };
+
+        &__moves{
+            gap: 5px;
+        };
+
+        &__versus-player{
+            font-size: 18px;
+        }
+    };
+};
+
+@media (max-width: 500px){
+    .game{
+
+        &__versus-player{
+            max-width: 300px;
+        }
+    }
+}
