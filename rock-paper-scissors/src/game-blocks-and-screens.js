@@ -15,11 +15,13 @@ export default class GameBlocksAndScreens {
     game.blocks['loader-title'] = this.createLoaderTitle;
     game.blocks['loader'] = this.createLoader;
     game.blocks['lobby-button'] = this.createLobbyButton;
+    game.blocks['lobby-loader'] = this.createLobbyLoader;
 
     game.blocks['moves'] = this.crateMoves;
     game.blocks['play-title'] = this.createPlayTitle;
     game.blocks['win-title'] = this.createWinTitle;
     game.blocks['lose-title'] = this.createLoseTitle;
+    game.blocks['draw-title'] = this.createDrawTitle;
     game.blocks['play-again'] = this.createPlayAgainButton;
     game.blocks['versus'] = this.createVersusField;
   }
@@ -56,6 +58,10 @@ export default class GameBlocksAndScreens {
     return templateEngine(GameBlocksAndScreens.lobbyButtonTemplate);
   }
 
+  createLobbyLoader() {
+    return templateEngine(GameBlocksAndScreens.lobbyLoaderTemplate);
+  }
+
   createMoves() {
     return templateEngine(GameBlocksAndScreens.movesTemplate);
   }
@@ -70,6 +76,10 @@ export default class GameBlocksAndScreens {
 
   createLoseTitle() {
     return templateEngine(GameBlocksAndScreens.loseTitleTemplate);
+  }
+
+  createDrawTitle() {
+    return templateEngine(GameBlocksAndScreens.drawTemplate);
   }
 
   createPlayAgainButton() {
@@ -94,6 +104,8 @@ export default class GameBlocksAndScreens {
     game.screens['win'] = this.createWinScreen();
 
     game.screens['lose'] = this.createLoseScreen();
+
+    game.screens['draw'] = this.createDrawScreen();
 
     game.screens['versus'] = this.createVersusScreen();
   }
@@ -135,9 +147,14 @@ export default class GameBlocksAndScreens {
     ];
   }
 
+  createDrawScreen() {
+    return [this.createDrawTitle()];
+  }
+
   createVersusScreen() {
     return [this.createVersusField()];
   }
+
 }
 
 GameBlocksAndScreens.titleTemplate = {
@@ -199,6 +216,7 @@ GameBlocksAndScreens.lobbyTemplate = {
     {
       tag: 'p',
       cls: 'game__lobby-title',
+      id: 'lobby',
       text: 'Players:',
     },
     {
@@ -207,6 +225,16 @@ GameBlocksAndScreens.lobbyTemplate = {
       id: 'players-list',
     },
   ],
+};
+
+GameBlocksAndScreens.lobbyLoaderTemplate = {
+  tag: 'div',
+  cls: 'game__lobby-loader',
+  id: 'lobby-loader',
+  content:[{
+    tag: 'i',
+    cls: ['fa-solid', 'fa-spinner', 'fa-spin-pulse'],
+  },]
 };
 
 GameBlocksAndScreens.playButtonTemplate = {
@@ -261,7 +289,7 @@ GameBlocksAndScreens.movesTemplate = {
       attrs: {
         alt: 'paper',
         width: '100',
-        src: './data/img/paper.jpg',
+        src: './public/img/paper.jpg',
       },
     },
     {
@@ -271,7 +299,7 @@ GameBlocksAndScreens.movesTemplate = {
       attrs: {
         alt: 'rock',
         width: '100',
-        src: './data/img/rock.jpg',
+        src: './public/img/rock.jpg',
       },
     },
     {
@@ -281,7 +309,7 @@ GameBlocksAndScreens.movesTemplate = {
       attrs: {
         alt: 'scissors',
         width: '100',
-        src: './data/img/scissors.jpg',
+        src: './public/img/scissors.jpg',
       },
     },
   ],
@@ -318,7 +346,7 @@ GameBlocksAndScreens.versusTemplate = {
   content: [
     {
       tag: 'p',
-      cls: ['game__versus-player', 'game__versus-player1'],
+      cls: ['game__versus-player'],
       id: 'player1',
       text: 'Player 1',
     },
@@ -329,9 +357,15 @@ GameBlocksAndScreens.versusTemplate = {
     },
     {
       tag: 'p',
-      cls: ['game__versus-player', 'game__versus-player2'],
+      cls: ['game__versus-player'],
       id: 'player2',
       text: 'Player 2',
     },
   ],
 };
+
+GameBlocksAndScreens.drawTemplate = {
+    tag: 'p',
+    cls: 'game__draw',
+    text: 'DRAW!',
+}

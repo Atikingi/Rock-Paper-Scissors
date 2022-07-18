@@ -1,143 +1,32 @@
 @font-face {
   font-family: "kgHappy";
-  src: url(../data/fonts/kg_happy/KGHAPPY.ttf);
+  src: url(../public/fonts/kg_happy/KGHAPPY.ttf);
 }
 @font-face {
   font-family: "goose";
-  src: url(../data/fonts/ds-goose.ttf);
+  src: url(../public/fonts/ds-goose.ttf);
 }
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-  font-family: "kgHappy", "goose", "Times New Roman", serif;
+@-webkit-keyframes load {
+  0% {
+    transform: translateX(40px);
+  }
+  50% {
+    transform: translateX(-30px);
+  }
+  100% {
+    transform: translateX(40px);
+  }
 }
-
-ul {
-  list-style: none;
-}
-
-.game {
-  width: 100vw;
-  height: 100vh;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-direction: column;
-  background-image: url("../data/img/background.jpg");
-  background-repeat: no-repeat;
-  background-size: cover;
-  background-position: center;
-  overflow: hidden;
-}
-.game__title {
-  margin-bottom: 50px;
-  font-weight: 300;
-  text-align: center;
-  color: #7324ae;
-  transform: rotate(357deg);
-}
-.game__lobby {
-  min-width: 350px;
-  min-height: 250px;
-  padding-top: 60px;
-  padding-right: 30px;
-  margin-bottom: 32px;
-  display: flex;
-  align-items: center;
-  justify-content: flex-start;
-  flex-direction: column;
-  background-image: url("../data/img/menu.png");
-  background-repeat: no-repeat;
-  background-size: contain;
-}
-.game__lobby-wrapper {
-  max-height: 110px;
-  display: flex;
-  flex-direction: column;
-  gap: 5px;
-  overflow-y: scroll;
-}
-.game__lobby-wrapper::-webkit-scrollbar {
-  width: 0;
-}
-.game__lobby-title {
-  font-size: 22px;
-  transform: rotate(357deg);
-}
-.game__lobby-player {
-  max-width: 250px;
-  word-break: break-all;
-  transform: rotate(357deg);
-}
-.game__lobby-current-player {
-  color: #7324ae;
-}
-.game__menu-button, .game__menu-button__small:last-of-type, .game__menu-button__small:first-of-type {
-  font-size: 42px;
-  color: #7324ae;
-  border: 0;
-  background-color: transparent;
-  transition: all 0.2s;
-}
-.game__menu-button:hover, .game__menu-button__small:hover:last-of-type, .game__menu-button__small:hover:first-of-type {
-  cursor: pointer;
-  transform: scale(1.2);
-}
-.game__menu-button-sign-up {
-  font-size: 26px;
-}
-.game__menu-button__small:first-of-type {
-  margin-bottom: 34px;
-  font-size: 26px;
-}
-.game__menu-button__small:last-of-type {
-  margin-top: 40px;
-  font-size: 26px;
-}
-.game__sign-up {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-}
-.game__sign-up-title {
-  margin-bottom: 20px;
-  margin-top: 20px;
-  font-size: 22px;
-  color: #854c4c;
-  font-weight: 400;
-  text-align: center;
-}
-.game__sign-up-username__error {
-  -webkit-animation: login-error 2s ease 0s 1 normal forwards;
-          animation: login-error 2s ease 0s 1 normal forwards;
-}
-.game__sign-up-username-wrapper {
-  width: 300px;
-  background-image: url("../data/img/user.png");
-  background-size: auto;
-  background-repeat: no-repeat;
-  background-position: center;
-}
-.game__sign-up-form {
-  width: 100%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  flex-direction: column;
-  background-color: transparent;
-}
-.game__sign-up-username {
-  max-width: 190px;
-  margin-top: 70px;
-  margin-bottom: 52px;
-  padding-left: 5px;
-  padding-right: 5px;
-  font-size: 20px;
-  font-weight: 300;
-  background-color: transparent;
-  border: 0;
-  outline: 0;
+@keyframes load {
+  0% {
+    transform: translateX(40px);
+  }
+  50% {
+    transform: translateX(-30px);
+  }
+  100% {
+    transform: translateX(40px);
+  }
 }
 @-webkit-keyframes login-error {
   0% {
@@ -223,6 +112,146 @@ ul {
     transform: translateY(0px);
   }
 }
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "kgHappy", "goose", "Times New Roman", serif;
+}
+
+ul {
+  list-style: none;
+}
+
+.game {
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  background-image: url("../public/img/background.jpg");
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center;
+  overflow: hidden;
+}
+.game__title {
+  margin-bottom: 50px;
+  font-weight: 300;
+  text-align: center;
+  color: #7324ae;
+  transform: rotate(357deg);
+}
+.game__lobby {
+  min-width: 350px;
+  min-height: 250px;
+  padding-top: 60px;
+  padding-right: 30px;
+  margin-bottom: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  flex-direction: column;
+  background-image: url("../public/img/menu.png");
+  background-repeat: no-repeat;
+  background-size: contain;
+}
+.game__lobby-wrapper {
+  max-height: 110px;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  overflow-y: scroll;
+}
+.game__lobby-wrapper::-webkit-scrollbar {
+  width: 0;
+}
+.game__lobby-title {
+  position: relative;
+  font-size: 22px;
+  transform: rotate(357deg);
+}
+.game__lobby-loader {
+  position: absolute;
+  left: -30px;
+  top: 5px;
+  font-size: 22px;
+}
+.game__lobby-player {
+  max-width: 250px;
+  word-break: break-all;
+  transform: rotate(357deg);
+}
+.game__lobby-current-player {
+  color: #7324ae;
+}
+.game__menu-button, .game__menu-button__small:last-of-type, .game__menu-button__small:first-of-type {
+  font-size: 42px;
+  color: #7324ae;
+  border: 0;
+  background-color: transparent;
+  transition: transform 0.2s;
+}
+.game__menu-button:hover, .game__menu-button__small:hover:last-of-type, .game__menu-button__small:hover:first-of-type {
+  cursor: pointer;
+  transform: scale(1.2);
+}
+.game__menu-button-sign-up {
+  font-size: 26px;
+}
+.game__menu-button__small:first-of-type {
+  margin-bottom: 34px;
+  font-size: 26px;
+}
+.game__menu-button__small:last-of-type {
+  margin-top: 40px;
+  font-size: 26px;
+}
+.game__sign-up {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.game__sign-up-title {
+  margin-bottom: 20px;
+  margin-top: 20px;
+  font-size: 22px;
+  color: #854c4c;
+  font-weight: 400;
+  text-align: center;
+}
+.game__sign-up-username__error {
+  -webkit-animation: login-error 2s ease 0s 1 normal forwards;
+          animation: login-error 2s ease 0s 1 normal forwards;
+}
+.game__sign-up-username-wrapper {
+  width: 300px;
+  background-image: url("../public/img/user.png");
+  background-size: auto;
+  background-repeat: no-repeat;
+  background-position: center;
+}
+.game__sign-up-form {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  background-color: transparent;
+}
+.game__sign-up-username {
+  max-width: 190px;
+  margin-top: 70px;
+  margin-bottom: 52px;
+  padding-left: 5px;
+  padding-right: 5px;
+  font-size: 20px;
+  font-weight: 300;
+  background-color: transparent;
+  border: 0;
+  outline: 0;
+}
 .game__loader {
   position: absolute;
   top: 70%;
@@ -255,28 +284,6 @@ ul {
   width: 85px;
   background: #854c4c;
 }
-@-webkit-keyframes load {
-  0% {
-    transform: translateX(40px);
-  }
-  50% {
-    transform: translateX(-30px);
-  }
-  100% {
-    transform: translateX(40px);
-  }
-}
-@keyframes load {
-  0% {
-    transform: translateX(40px);
-  }
-  50% {
-    transform: translateX(-30px);
-  }
-  100% {
-    transform: translateX(40px);
-  }
-}
 .game__loader-title {
   font-weight: 300;
   color: #854c4c;
@@ -291,7 +298,7 @@ ul {
 }
 .game__moves-item {
   border-radius: 4px;
-  transition: all 0.3s;
+  transition: transform 0.3s;
 }
 .game__moves-item:hover {
   cursor: pointer;
@@ -320,14 +327,14 @@ ul {
   font-size: 32px;
   text-align: left;
   word-break: break-all;
-  transition: all 1s ease-in;
+  transition: left 1s ease-in;
 }
-.game__versus-player1 {
+.game__versus-player:nth-of-type(1) {
   margin-bottom: 100px;
   color: #ab08ff;
   left: -5000px;
 }
-.game__versus-player2 {
+.game__versus-player:nth-of-type(3) {
   margin-top: 100px;
   color: #2c8083;
   left: 5000px;
@@ -337,8 +344,13 @@ ul {
   font-size: 58px;
   color: #207f03;
 }
+.game__draw {
+  font-size: 36px;
+  color: #7324ae;
+  text-align: center;
+}
 
-@media all and (max-width: 376px) {
+@media (max-width: 376px) {
   .game__title {
     margin-bottom: 0;
   }
@@ -349,6 +361,9 @@ ul {
   .game__lobby-title {
     margin-bottom: 10px;
     font-size: 18px;
+  }
+  .game__lobby-wrapper {
+    max-height: 90px;
   }
   .game__loader {
     left: 38%;

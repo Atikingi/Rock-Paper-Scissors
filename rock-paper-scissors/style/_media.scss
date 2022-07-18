@@ -1,4 +1,4 @@
-@media all and (max-width:376px){
+@media (max-width:376px){
     .game{
 
         &__title{
@@ -15,6 +15,10 @@
                 font-size: 18px;
             };
         };
+
+        &__lobby-wrapper{
+            max-height: 90px;
+        }
 
         &__loader{
             left: 38%;

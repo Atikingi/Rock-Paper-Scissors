@@ -1,16 +1,20 @@
 export default class GameAPI {
   API_URL = 'https://skypro-rock-scissors-paper.herokuapp.com/';
 
+  showErrorMessage(){
+    console.log('Server error');
+  }
+
   checkServerStatus() {
     request({
       url: `${this.API_URL}ping`,
       onSuccess: (data) => {
         if (data.status !== 'ok') {
-          console.log('Server error');
+          this.showErrorMessage();
         }
       },
       onError: () => {
-        console.log('Server error');
+        this.showErrorMessage();
       },
     });
   }
@@ -25,12 +29,12 @@ export default class GameAPI {
         onSuccess(data);
       },
       onError: () => {
-        console.log('Server error');
+        this.showErrorMessage();
       },
     });
   }
 
-  playerStatus(token, onSuccess) {
+  checkPlayerStatus(token, onSuccess) {
     request({
       url: `${this.API_URL}player-status`,
       params: {
@@ -40,7 +44,7 @@ export default class GameAPI {
         onSuccess(data);
       },
       onError: () => {
-        console.log('Server error');
+        this.showErrorMessage();
       },
     });
   }
@@ -55,12 +59,12 @@ export default class GameAPI {
         onSuccess(data);
       },
       onError: () => {
-        console.log('Server error');
+        this.showErrorMessage();
       },
     });
   }
 
-  gameStatus(token, id, onSuccess) {
+  checkGameStatus(token, id, onSuccess) {
     request({
       url: `${this.API_URL}game-status`,
       params: {
@@ -71,7 +75,7 @@ export default class GameAPI {
         onSuccess(data);
       },
       onError: () => {
-        console.log('Server error');
+        this.showErrorMessage();
       },
     });
   }
@@ -85,7 +89,7 @@ export default class GameAPI {
         move,
       },
       onError: () => {
-        console.log('Server error');
+        this.showErrorMessage();
       },
     });
   }
@@ -105,10 +109,8 @@ export default class GameAPI {
         onSuccess(data);
       },
       onError: () => {
-        console.log('Server error');
+        this.showErrorMessage();
       },
     });
   }
 }
-
-// const gameAPI = new GameAPI();

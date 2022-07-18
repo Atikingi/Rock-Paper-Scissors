@@ -1,13 +1,63 @@
 @import 'vars/colors';
+@import 'fonts';
 
-@font-face {
-  font-family: 'kgHappy';
-  src: url(../data/fonts/kg_happy/KGHAPPY.ttf);
+@keyframes load {
+  0% {
+    transform: translateX(40px);
+  }
+
+  50% {
+    transform: translateX(-30px);
+  }
+  100% {
+    transform: translateX(40px);
+  }
 }
 
-@font-face {
-  font-family: 'goose';
-  src: url(../data/fonts/ds-goose.ttf);
+@keyframes login-error {
+  0% {
+    animation-timing-function: ease-in;
+    opacity: 1;
+    transform: translateY(-45px);
+  }
+
+  24% {
+    opacity: 1;
+  }
+
+  40% {
+    animation-timing-function: ease-in;
+    transform: translateY(-24px);
+  }
+
+  65% {
+    animation-timing-function: ease-in;
+    transform: translateY(-12px);
+  }
+
+  82% {
+    animation-timing-function: ease-in;
+    transform: translateY(-6px);
+  }
+
+  93% {
+    animation-timing-function: ease-in;
+    transform: translateY(-4px);
+  }
+
+  25%,
+  55%,
+  75%,
+  87% {
+    animation-timing-function: ease-out;
+    transform: translateY(0px);
+  }
+
+  100% {
+    animation-timing-function: ease-out;
+    opacity: 1;
+    transform: translateY(0px);
+  }
 }
 
 * {
@@ -29,7 +79,7 @@ ul {
   justify-content: center;
   flex-direction: column;
 
-  background-image: url('../data/img/background.jpg');
+  background-image: url('../public/img/background.jpg');
   background-repeat: no-repeat;
   background-size: cover;
   background-position: center;
@@ -56,7 +106,7 @@ ul {
     justify-content: flex-start;
     flex-direction: column;
 
-    background-image: url('../data/img/menu.png');
+    background-image: url('../public/img/menu.png');
     background-repeat: no-repeat;
     background-size: contain;
   }
@@ -75,9 +125,19 @@ ul {
   }
 
   &__lobby-title {
+    position: relative;
+
     font-size: 22px;
 
     transform: rotate(357deg);
+  }
+
+  &__lobby-loader {
+    position: absolute;
+    left: -30px;
+    top: 5px;
+
+    font-size: 22px;
   }
 
   &__lobby-player {
@@ -99,7 +159,7 @@ ul {
     border: 0;
     background-color: transparent;
 
-    transition: all 0.2s;
+    transition: transform 0.2s;
 
     &:hover {
       cursor: pointer;
@@ -110,7 +170,7 @@ ul {
       font-size: 26px;
     }
 
-    &__small:first-of-type{
+    &__small:first-of-type {
       @extend .game__menu-button;
 
       margin-bottom: 34px;
@@ -118,7 +178,7 @@ ul {
       font-size: 26px;
     }
 
-    &__small:last-of-type{
+    &__small:last-of-type {
       @extend .game__menu-button;
 
       margin-top: 40px;
@@ -150,7 +210,7 @@ ul {
     &-username-wrapper {
       width: 300px;
 
-      background-image: url('../data/img/user.png');
+      background-image: url('../public/img/user.png');
       background-size: auto;
       background-repeat: no-repeat;
       background-position: center;
@@ -179,52 +239,6 @@ ul {
       background-color: transparent;
       border: 0;
       outline: 0;
-    }
-
-    @keyframes login-error {
-      0% {
-        animation-timing-function: ease-in;
-        opacity: 1;
-        transform: translateY(-45px);
-      }
-
-      24% {
-        opacity: 1;
-      }
-
-      40% {
-        animation-timing-function: ease-in;
-        transform: translateY(-24px);
-      }
-
-      65% {
-        animation-timing-function: ease-in;
-        transform: translateY(-12px);
-      }
-
-      82% {
-        animation-timing-function: ease-in;
-        transform: translateY(-6px);
-      }
-
-      93% {
-        animation-timing-function: ease-in;
-        transform: translateY(-4px);
-      }
-
-      25%,
-      55%,
-      75%,
-      87% {
-        animation-timing-function: ease-out;
-        transform: translateY(0px);
-      }
-
-      100% {
-        animation-timing-function: ease-out;
-        opacity: 1;
-        transform: translateY(0px);
-      }
     }
   }
 
@@ -260,19 +274,6 @@ ul {
       background: $primary-title;
     }
 
-    @keyframes load {
-      0% {
-        transform: translateX(40px);
-      }
-
-      50% {
-        transform: translateX(-30px);
-      }
-      100% {
-        transform: translateX(40px);
-      }
-    }
-
     &-title {
       font-weight: 300;
       color: $primary-title;
@@ -280,7 +281,7 @@ ul {
     }
   }
 
-  &__moves{
+  &__moves {
     display: flex;
     justify-content: center;
     align-items: center;
@@ -288,32 +289,32 @@ ul {
     margin-top: 40px;
   }
 
-  &__moves-item{
+  &__moves-item {
     border-radius: 4px;
 
-    transition: all 0.3s;
+    transition: transform 0.3s;
 
-    &:hover{
+    &:hover {
       cursor: pointer;
       transform: scale(1.03);
     }
   }
 
-  &__finish-title{
+  &__finish-title {
     font-size: 48px;
     font-weight: 300;
     text-align: center;
 
-    &__win{
+    &__win {
       color: $green;
     }
 
-    &__lose{
+    &__lose {
       color: $crimson;
     }
   }
 
-  &__versus{
+  &__versus {
     position: relative;
     display: flex;
     flex-direction: column;
@@ -322,23 +323,23 @@ ul {
 
   }
 
-  &__versus-player{
+  &__versus-player {
     position: relative;
 
     font-size: 32px;
     text-align: left;
     word-break: break-all;
 
-    transition: all 1.0s ease-in;
+    transition: left 1.0s ease-in;
 
-    &1{
+    &:nth-of-type(1) {
       margin-bottom: 100px;
 
       color: #ab08ff;
       left: -5000px;
     }
 
-    &2{
+    &:nth-of-type(3) {
       margin-top: 100px;
 
       color: #2c8083;
@@ -346,11 +347,17 @@ ul {
     }
   }
 
-  &__versus-text{
+  &__versus-text {
     width: 90px;
 
     font-size: 58px;
     color: $green
+  }
+
+  &__draw{
+    font-size: 36px;
+    color: $primary-violet;
+    text-align: center;
   }
 }
 

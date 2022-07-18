@@ -1,17 +1,23 @@
 import GameAPI from '/rock-paper-scissors/src/api.js';
+import SessionStorage from '/rock-paper-scissors/src/session-storage.js';
 
 export default class GameEvent {
+
+  API = new GameAPI();
+  SESSION_STORAGE = new SessionStorage();
+
+  USER_TOKEN = this.SESSION_STORAGE.get('token');
+  GAME_ID = this.SESSION_STORAGE.get('id');
+  PLAYER_NAME = this.SESSION_STORAGE.get('username');
+
+  PLAYER_ID = 1;
+  FIRST_MOVE = true;
+
   constructor() {
     this.container = document.getElementById('game-wrapper');
 
     this.API.checkServerStatus();
   }
-
-  API = new GameAPI();
-  USER_TOKEN = sessionStorage.getItem('token') ? sessionStorage.getItem('token') : '';
-  GAME_ID = sessionStorage.getItem('id') ? sessionStorage.getItem('id') : '';
-  PLAYER_ID = 1;
-  PLAYER_NAME = sessionStorage.getItem('username');
 
   // login screen
   loginScreenEvent() {
@@ -47,8 +53,8 @@ export default class GameEvent {
         this.USER_TOKEN = response.token;
         this.PLAYER_NAME = this.username.value;
 
-        sessionStorage.setItem('username', this.username.value);
-        sessionStorage.setItem('token', response.token);
+        this.SESSION_STORAGE.add('username', this.username.value);
+        this.SESSION_STORAGE.add('token', response.token);
 
         this.checkPlayerStatus();
       });
@@ -60,9 +66,11 @@ export default class GameEvent {
     document.getElementById('button-exit').addEventListener('click', (event) => {
       event.preventDefault();
 
-      sessionStorage.removeItem('token');
-      sessionStorage.removeItem('id');
-      sessionStorage.removeItem('username');
+      this.SESSION_STORAGE.remove('token');
+      this.SESSION_STORAGE.remove('id');
+      this.SESSION_STORAGE.remove('username');
+
+      this.FIRST_MOVE = true;
 
       game.renderScreen('login');
     });
@@ -77,11 +85,12 @@ export default class GameEvent {
         }
 
         game['id'] = response['player-status'].game.id;
-        sessionStorage.setItem('id', response['player-status'].game.id);
+        this.SESSION_STORAGE.add('id', response['player-status'].game.id);
       });
 
       game.renderScreen('loader');
       this.backToLobby();
+      this.FIRST_MOVE = true;
 
       this.gameStatusSetInterval();
     });
@@ -91,10 +100,11 @@ export default class GameEvent {
     document.getElementById('button-lobby').addEventListener('click', () => {
       game.renderScreen('lobby');
 
-      sessionStorage.removeItem('id');
+      this.SESSION_STORAGE.remove('id');
 
       this.exitFromTheGame();
       this.startGame('button-play');
+      this.FIRST_MOVE = true;
 
       this.getPlayerList();
     });
@@ -112,7 +122,7 @@ export default class GameEvent {
 
         this.API.playerMove(
           this.USER_TOKEN,
-          game.id === '' ? sessionStorage.getItem('id') : game.id,
+          game.id === '' ? this.SESSION_STORAGE.getValue('id') : game.id,
           target.id
         );
 
@@ -130,7 +140,7 @@ export default class GameEvent {
   //Game and player status checkers
 
   checkPlayerStatus() {
-    this.API.playerStatus(this.USER_TOKEN, (response) => {
+    this.API.checkPlayerStatus(this.USER_TOKEN, (response) => {
 
       if (response.status === 'error') {
         game.renderScreen('login');
@@ -140,7 +150,7 @@ export default class GameEvent {
       }
 
       if (
-        sessionStorage.getItem('token') &&
+        this.SESSION_STORAGE.getValue('token') &&
         response['player-status'].status === 'lobby'
       ) {
         game.renderScreen('lobby');
@@ -152,7 +162,7 @@ export default class GameEvent {
       }
 
       if (
-        sessionStorage.getItem('token') &&
+        this.SESSION_STORAGE.getValue('token') &&
         response['player-status'].status === 'game'
       ) {
         game.renderScreen('loader');
@@ -170,33 +180,55 @@ export default class GameEvent {
   }
 
   checkGameStatus() {
-    this.API.gameStatus(
+    this.API.checkGameStatus(
       this.USER_TOKEN,
-      game.id === '' ? sessionStorage.getItem('id') : game.id,
+      game.id === '' ? this.SESSION_STORAGE.getValue('id') : game.id,
       (response) => {
 
-        if (response.status === 'error') {
+        const statuses = {
+          'waiting-you': 'waiting-for-your-move',
+          'lose': 'lose',
+          'win': 'win',
+          'error': 'error',
+        }
+
+        if (response.status === statuses['error']) {
           game.renderScreen('lobby');
           return;
         }
 
-        if (response['game-status'].status === 'waiting-for-your-move') {
-          this.showVersusScreen(response);
-          setTimeout(() => {
-            game.renderScreen('moves');
-            this.playerMoveHandler();
-          }, 2500);
+        if (response['game-status'].status === statuses['waiting-you']) {
+          if (this.FIRST_MOVE){
+            this.showVersusScreen(response);
+
+            setTimeout(() => {
+              game.renderScreen('moves');
+
+              this.FIRST_MOVE = false;
+              this.playerMoveHandler();
+            }, 2500);
+          }else{
+            game.renderScreen('draw');
+            setTimeout(() => {
+              game.renderScreen('moves');
+              this.playerMoveHandler();
+            }, 2500);
+          }
         }
 
-        if (response['game-status'].status === 'lose') {
+        if (response['game-status'].status === statuses['lose']) {
           game.renderScreen('lose');
+
+          this.FIRST_MOVE = true;
 
           this.backToLobby();
           this.startGame('button-play-again');
         }
 
-        if (response['game-status'].status === 'win') {
+        if (response['game-status'].status === statuses['win']) {
           game.renderScreen('win');
+
+          this.FIRST_MOVE = true;
 
           this.backToLobby();
           this.startGame('button-play-again');
@@ -214,10 +246,17 @@ export default class GameEvent {
   }
 
   getPlayerList() {
+    game.renderBlock('lobby-loader', document.getElementById('lobby'));
     game.timers.push(
       setInterval(() => {
         this.API.playerList(this.USER_TOKEN, (response) => {
           this.playersList = document.getElementById('players-list');
+          this.lobbyLoader = document.getElementById('lobby-loader');
+
+          if(this.lobbyLoader){
+            this.lobbyLoader.remove();
+            this.lobbyLoader = undefined;
+          }
 
           this.playersList.innerHTML = '';
 
