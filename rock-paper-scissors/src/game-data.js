@@ -1,4 +1,4 @@
-export default class SessionStorage {
+export default class GameData {
 
     get(key){
         return sessionStorage.getItem(key) || '';

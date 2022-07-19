@@ -1,17 +1,24 @@
 import GameAPI from '/rock-paper-scissors/src/api.js';
-import SessionStorage from '/rock-paper-scissors/src/session-storage.js';
+import GameData from '/rock-paper-scissors/src/game-data.js';
 
 export default class GameEvent {
 
   API = new GameAPI();
-  SESSION_STORAGE = new SessionStorage();
+  GAME_DATA = new GameData();
 
-  USER_TOKEN = this.SESSION_STORAGE.get('token');
-  GAME_ID = this.SESSION_STORAGE.get('id');
-  PLAYER_NAME = this.SESSION_STORAGE.get('username');
+  USER_TOKEN = this.GAME_DATA.get('token');
+  GAME_ID = this.GAME_DATA.get('id');
+  PLAYER_NAME = this.GAME_DATA.get('username');
 
   PLAYER_ID = 1;
   FIRST_MOVE = true;
+
+  //statuses
+
+  error = 'error';
+  waitingPlayer = 'waiting-for-your-move';
+  lose = 'lose';
+  win = 'win';
 
   constructor() {
     this.container = document.getElementById('game-wrapper');
@@ -53,8 +60,8 @@ export default class GameEvent {
         this.USER_TOKEN = response.token;
         this.PLAYER_NAME = this.username.value;
 
-        this.SESSION_STORAGE.add('username', this.username.value);
-        this.SESSION_STORAGE.add('token', response.token);
+        this.GAME_DATA.add('username', this.username.value);
+        this.GAME_DATA.add('token', response.token);
 
         this.checkPlayerStatus();
       });
@@ -66,9 +73,9 @@ export default class GameEvent {
     document.getElementById('button-exit').addEventListener('click', (event) => {
       event.preventDefault();
 
-      this.SESSION_STORAGE.remove('token');
-      this.SESSION_STORAGE.remove('id');
-      this.SESSION_STORAGE.remove('username');
+      this.GAME_DATA.remove('token');
+      this.GAME_DATA.remove('id');
+      this.GAME_DATA.remove('username');
 
       this.FIRST_MOVE = true;
 
@@ -85,7 +92,7 @@ export default class GameEvent {
         }
 
         game['id'] = response['player-status'].game.id;
-        this.SESSION_STORAGE.add('id', response['player-status'].game.id);
+        this.GAME_DATA.add('id', response['player-status'].game.id);
       });
 
       game.renderScreen('loader');
@@ -100,7 +107,7 @@ export default class GameEvent {
     document.getElementById('button-lobby').addEventListener('click', () => {
       game.renderScreen('lobby');
 
-      this.SESSION_STORAGE.remove('id');
+      this.GAME_DATA.remove('id');
 
       this.exitFromTheGame();
       this.startGame('button-play');
@@ -122,7 +129,7 @@ export default class GameEvent {
 
         this.API.playerMove(
           this.USER_TOKEN,
-          game.id === '' ? this.SESSION_STORAGE.getValue('id') : game.id,
+          game.id === '' ? this.GAME_DATA.getValue('id') : game.id,
           target.id
         );
 
@@ -150,7 +157,7 @@ export default class GameEvent {
       }
 
       if (
-        this.SESSION_STORAGE.getValue('token') &&
+        this.GAME_DATA.getValue('token') &&
         response['player-status'].status === 'lobby'
       ) {
         game.renderScreen('lobby');
@@ -162,7 +169,7 @@ export default class GameEvent {
       }
 
       if (
-        this.SESSION_STORAGE.getValue('token') &&
+        this.GAME_DATA.getValue('token') &&
         response['player-status'].status === 'game'
       ) {
         game.renderScreen('loader');
@@ -182,22 +189,15 @@ export default class GameEvent {
   checkGameStatus() {
     this.API.checkGameStatus(
       this.USER_TOKEN,
-      game.id === '' ? this.SESSION_STORAGE.getValue('id') : game.id,
+      game.id === '' ? this.GAME_DATA.getValue('id') : game.id,
       (response) => {
 
-        const statuses = {
-          'waiting-you': 'waiting-for-your-move',
-          'lose': 'lose',
-          'win': 'win',
-          'error': 'error',
-        }
-
-        if (response.status === statuses['error']) {
+        if (response.status === this.error) {
           game.renderScreen('lobby');
           return;
         }
 
-        if (response['game-status'].status === statuses['waiting-you']) {
+        if (response['game-status'].status === this.waitingPlayer) {
           if (this.FIRST_MOVE){
             this.showVersusScreen(response);
 
@@ -216,7 +216,7 @@ export default class GameEvent {
           }
         }
 
-        if (response['game-status'].status === statuses['lose']) {
+        if (response['game-status'].status === this.lose) {
           game.renderScreen('lose');
 
           this.FIRST_MOVE = true;
@@ -225,7 +225,7 @@ export default class GameEvent {
           this.startGame('button-play-again');
         }
 
-        if (response['game-status'].status === statuses['win']) {
+        if (response['game-status'].status === this.win) {
           game.renderScreen('win');
 
           this.FIRST_MOVE = true;
