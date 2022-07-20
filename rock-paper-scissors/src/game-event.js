@@ -13,13 +13,6 @@ export default class GameEvent {
   PLAYER_ID = 1;
   FIRST_MOVE = true;
 
-  //statuses
-
-  error = 'error';
-  waitingPlayer = 'waiting-for-your-move';
-  lose = 'lose';
-  win = 'win';
-
   constructor() {
     this.container = document.getElementById('game-wrapper');
 
@@ -192,12 +185,12 @@ export default class GameEvent {
       game.id === '' ? this.GAME_DATA.getValue('id') : game.id,
       (response) => {
 
-        if (response.status === this.error) {
+        if (response.status === game.status.error) {
           game.renderScreen('lobby');
           return;
         }
 
-        if (response['game-status'].status === this.waitingPlayer) {
+        if (response['game-status'].status === game.status.waitingPlayer) {
           if (this.FIRST_MOVE){
             this.showVersusScreen(response);
 
@@ -216,7 +209,7 @@ export default class GameEvent {
           }
         }
 
-        if (response['game-status'].status === this.lose) {
+        if (response['game-status'].status === game.status.lose) {
           game.renderScreen('lose');
 
           this.FIRST_MOVE = true;
@@ -225,7 +218,7 @@ export default class GameEvent {
           this.startGame('button-play-again');
         }
 
-        if (response['game-status'].status === this.win) {
+        if (response['game-status'].status === game.status.win) {
           game.renderScreen('win');
 
           this.FIRST_MOVE = true;
