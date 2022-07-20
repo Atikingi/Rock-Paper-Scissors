@@ -1,5 +1,5 @@
-import GameBlocksAndScreens from '/rock-paper-scissors/src/game-blocks-and-screens.js';
-import GameEvent from '/rock-paper-scissors/src/game-event.js';
+import GameBlocksAndScreens from '/src/game-blocks-and-screens.js';
+import GameEvent from '/src/game-event.js';
 
 const gameWrapper = document.getElementById('game-wrapper');
 
