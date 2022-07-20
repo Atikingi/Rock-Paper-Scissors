@@ -28,6 +28,12 @@ window.game = {
   },
   timers: [],
   id: '',
+  status: {
+      error = 'error';
+      waitingPlayer = 'waiting-for-your-move';
+      lose = 'lose';
+      win = 'win';
+  },
 };
 
 const gameBlocksAndScreens = new GameBlocksAndScreens();
