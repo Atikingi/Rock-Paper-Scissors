@@ -1,5 +1,5 @@
-import GameAPI from '/rock-paper-scissors/src/api.js';
-import GameData from '/rock-paper-scissors/src/game-data.js';
+import GameAPI from '/Rock-Paper-Scissors/src/api.js';
+import GameData from '/Rock-Paper-Scissors/src/game-data.js';
 
 export default class GameEvent {
 
